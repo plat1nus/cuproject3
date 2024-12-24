@@ -1,30 +1,43 @@
-from flask import Flask, render_template, request, jsonify
+import dash
+from dash import dcc, html
+import plotly.express as px
+import pandas as pd
 import requests
 
-from check_weather import check_bad_weather
+app = dash.Dash(__name__)
 
-app = Flask(__name__)
+# Пример данных о погоде
+data = {
+    'date': ['2024-12-20', '2024-12-21', '2024-12-22'],
+    'temperature': [5, 7, 3],
+    'wind_speed': [10, 15, 20],
+    'precipitation_probability': [20, 50, 80]
+}
+df = pd.DataFrame(data)
 
+# Создание графиков
+fig_temp = px.line(df, x='date', y='temperature', title='Температура по дням')
+fig_wind = px.line(df, x='date', y='wind_speed', title='Скорость ветра по дням')
+fig_precip = px.line(df, x='date', y='precipitation_probability', title='Вероятность осадков по дням')
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+app.layout = html.Div(children=[
+    html.H1(children='Прогноз погоды'),
 
-@app.route('/check_weather', methods=['POST'])
-def check_weather():
-    try:
-        temperature = float(request.form['temperature'])
-        wind_speed = float(request.form['wind_speed'])
-        precipitation_probability = float(request.form['precipitation_probability'])
-        humidity = float(request.form['humidity'])
+    dcc.Graph(
+        id='temperature-graph',
+        figure=fig_temp
+    ),
 
-        result = check_bad_weather(temperature, wind_speed, precipitation_probability, humidity)
+    dcc.Graph(
+        id='wind-speed-graph',
+        figure=fig_wind
+    ),
 
-        return render_template('index.html', result=result)
-
-    except ValueError:
-        return render_template('index.html', result='Ошибка: введены некорректные данные.')
+    dcc.Graph(
+        id='precipitation-graph',
+        figure=fig_precip
+    )
+])
 
 if __name__ == '__main__':
-    app.run(debug=True)    
-
+    app.run_server(debug=True)

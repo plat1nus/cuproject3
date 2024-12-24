@@ -57,6 +57,21 @@
         <button type="submit">Проверить погоду</button>
     </form>
 
+    <form action="/check_weather" method="post">
+        <label for="city_name">Название города:</label>
+        <input type="text" id="city_name" name="city_name" required>
+        
+        <button type="submit">Проверить погоду</button>
+    </form>
+    
+    <div id="weather-graphs">
+        {% if weather_data %}
+            <!-- Здесь будут отображаться графики -->
+            {{ weather_graphs|safe }}
+        {% endif %}
+    </div>
+    
+
     {% if result %}
         <h2>Результаты оценки погоды:</h2>
         <p>{{ result }}</p>
