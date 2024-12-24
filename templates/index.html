@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка погодных условий</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Проверка погоды</h1>
+    <form action="/check_weather" method="post">
+        <label for="temperature">Температура (°C):</label>
+        <input type="number" id="temperature" name="temperature" required>
+
+        <label for="wind_speed">Скорость ветра (км/ч):</label>
+        <input type="number" id="wind_speed" name="wind_speed" required>
+
+        <label for="precipitation_probability">Вероятность дождя (%):</label>
+        <input type="number" id="precipitation_probability" name="precipitation_probability" required>
+
+        <label for="humidity">Влажность (%):</label>
+        <input type="number" id="humidity" name="humidity" required>
+
+        <button type="submit">Проверить погоду</button>
+    </form>
+
+    {% if result %}
+        <h2>Результаты оценки погоды:</h2>
+        <p>{{ result }}</p>
+    {% endif %}
+</body>
+</html>
